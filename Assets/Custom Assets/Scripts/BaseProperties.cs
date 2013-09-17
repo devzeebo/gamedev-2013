@@ -17,19 +17,16 @@ public class BaseProperties : OnTouchObject {
 	
 	public override void OnTouch ()
 	{
-		base.OnTouch ();
+		base.OnTouch();
 		
 		if (module == null)
 		{
-			//Debug.Log("Tap Base");
-			CreateMenu(transform);
+            // create the menu object
+            GameObject temp = (GameObject)Instantiate(menu, transform.position, transform.rotation);
+            temp.AddComponent<Menu>();
+            temp.GetComponent<Menu>().Reference = gameObject;
+
+            CameraController.createdMenu = temp.GetComponent<Menu>();
 		}
-	}
-	
-	void CreateMenu(Transform tile)
-	{
-		CameraController.menuOpen = true;
-		CameraController.createdMenu = (GameObject)Instantiate(menu, tile.position, tile.rotation);
-		CameraController.selectedTile = transform;
 	}
 }

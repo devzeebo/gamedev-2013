@@ -5,11 +5,11 @@ public class BuildModule : OnTouchObject {
 	
 	public GameObject moduleObj;
 	
-	public override void OnTouch ()
+	public override void OnTouch()
 	{
-		base.OnTouch ();
+		base.OnTouch();
 		
-		Instantiate(moduleObj, CameraController.selectedTile.position + moduleObj.transform.position, CameraController.selectedTile.rotation);
-		CameraController.DeleteMenu();
+		GameObject module = (GameObject)Instantiate(moduleObj, CameraController.createdMenu.Reference.transform.position + moduleObj.transform.position, CameraController.createdMenu.Reference.transform.rotation);
+        CameraController.createdMenu.Reference.GetComponent<BaseProperties>().module = module;
 	}
 }

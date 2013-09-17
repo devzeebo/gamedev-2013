@@ -35,7 +35,6 @@ public class InputHandler
 		}
 		
 		if (Input.touchCount > 0) {
-			
 			foreach (Touch touch in Input.touches) {
 				InputEvent e = events[touch.fingerId];
 				e.phase = touch.phase;

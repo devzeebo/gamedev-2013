@@ -5,12 +5,13 @@ public class BuildBase : OnTouchObject {
 	
 	public GameObject baseObj;
 	
-	public override void OnTouch ()
+	public override void OnTouch()
 	{
-		base.OnTouch ();
-		
-		Instantiate(baseObj, CameraController.selectedTile.position, CameraController.selectedTile.rotation);
-		Destroy(CameraController.selectedTile.gameObject);
-		CameraController.DeleteMenu();
+		base.OnTouch();
+
+        // Create the Base object
+        GameObject temp = (GameObject)Instantiate(baseObj, CameraController.ActiveMenu.Reference.transform.position, CameraController.ActiveMenu.Reference.transform.rotation);
+
+        Destroy(CameraController.ActiveMenu.Reference);
 	}
 }

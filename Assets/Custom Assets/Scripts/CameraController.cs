@@ -3,18 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CameraController : MonoBehaviour {
-	
-	public GameObject menu;
-	[HideInInspector]
-	public static GameObject createdMenu;
+
+    [HideInInspector]
+    public static Menu createdMenu;
+    public static Menu ActiveMenu
+    {
+        get { return createdMenu; }
+        set
+        {
+            createdMenu = value;
+            Debug.Log("Created New Menu: " + value);
+        }
+    }
 	
 	public float speed;
 	
 	[HideInInspector]
 	public static bool menuOpen;
-	
-	[HideInInspector]
-	public static Transform selectedTile;
 	
 	InputHandler inputHandler;
 	
@@ -32,24 +37,19 @@ public class CameraController : MonoBehaviour {
 			Vector3 touchPoint = Camera.main.ScreenToWorldPoint(new Vector3(e.position.x, e.position.y, 40));
 			Debug.DrawLine(Camera.main.transform.position, touchPoint, Color.red);
 			
-			if (menuOpen)
+			if (createdMenu != null)
 			{
-				//if (touch.phase == TouchPhase.Moved)
-				//	DeleteMenu();
-				if (e.phase == TouchPhase.Ended)
-				{
-					RaycastHit target;
-					if (Physics.Raycast(Camera.main.transform.position, (touchPoint - Camera.main.transform.position).normalized, out target))
-					{
-						//Debug.Log("Hit Object");
-						if (target.transform.gameObject.GetComponent<OnTouchObject>() != null)
-						{
-							//Debug.Log("Object is a 3D button");
-							target.transform.gameObject.GetComponent<OnTouchObject>().OnTouch();
-						}
-					}
-					DeleteMenu();
-				}
+                if (e.phase == TouchPhase.Ended)
+                {
+                    GameObject o = GetTouchedObject(touchPoint);
+                    if (o.tag == "Button")
+                    {
+                        OnTouchObject touchEvent = o.GetComponent<OnTouchObject>();
+                        touchEvent.OnTouch();
+                    }
+
+                    DeleteMenu();
+                }
 			}
 			else
 			{
@@ -60,16 +60,11 @@ public class CameraController : MonoBehaviour {
 				}
 				if (e.phase == TouchPhase.Ended)
 				{
-					RaycastHit target;
-					if (Physics.Raycast(Camera.main.transform.position, (touchPoint - Camera.main.transform.position).normalized, out target)) {
-						
-						if (target.transform.tag == "Tile") {
-							CreateMenu(target.transform);
-						}
-						else if (target.transform.tag == "Base") {
-							target.transform.gameObject.GetComponent<OnTouchObject>().OnTouch();
-						}
-					}
+                    GameObject o = GetTouchedObject(touchPoint);
+                    if (o != null && o.GetComponent<OnTouchObject>() != null)
+                    {
+                        o.GetComponent<OnTouchObject>().OnTouch();
+                    }
 				}
 			}
 		}
@@ -79,18 +74,21 @@ public class CameraController : MonoBehaviour {
 	{
 		transform.Translate(-push.x * speed, -push.y * speed, 0);
 	}
-	
-	void CreateMenu(Transform tile)
-	{
-		menuOpen = true;
-		selectedTile = tile;
-		
-		createdMenu = (GameObject)Instantiate(menu, tile.position, tile.rotation);
-	}
+
+    GameObject GetTouchedObject(Vector3 vector)
+    {
+        RaycastHit target;
+        if (Physics.Raycast(Camera.main.transform.position, (vector - Camera.main.transform.position).normalized, out target))
+        {
+            return target.transform.gameObject;
+        }
+
+        return null;
+    }
 	
 	public static void DeleteMenu()
 	{
-		menuOpen = false;
-		Destroy(createdMenu);
+		Destroy(createdMenu.gameObject);
+        createdMenu = null;
 	}
 }
