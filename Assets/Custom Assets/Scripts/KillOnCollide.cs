@@ -5,6 +5,7 @@ public class KillOnCollide : MonoBehaviour {
 	
 	public LookAtEnemy tower;
 	public GameObject dust;
+	public GameObject hit;
 
 	void Start () {
 	}
@@ -26,7 +27,7 @@ public class KillOnCollide : MonoBehaviour {
                 tower.RemoveTracking();
             }
 			
-			Instantiate(dust, transform.position, transform.rotation);
+			Instantiate(hit, transform.position, transform.rotation);
             Destroy(gameObject);
 		}
 		else if (other.tag == "Terrain")

@@ -7,12 +7,20 @@ using UnityEngine;
 class Health : MonoBehaviour
 {
     public float maxHealth = 100;
-    internal float currentHealth = 100;
+    internal float currentHealth;
 	
+	public float CurrentHealth {
+		get { return currentHealth; }
+		set {
+			currentHealth = value;
+			UpdateScale();
+		}
+	}
 	float startScale;
 	
 	void Start()
 	{
+		currentHealth = maxHealth;
 		startScale = transform.GetChild(0).localScale.y;
 	}
 	

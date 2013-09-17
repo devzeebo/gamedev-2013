@@ -5,7 +5,8 @@ public class End : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		//Debug.Log("Collision");
+		if (GetComponent<Health>().CurrentHealth > 0)
+			GetComponent<Health>().CurrentHealth--;
 		Destroy(other.gameObject);
 	}
 }
