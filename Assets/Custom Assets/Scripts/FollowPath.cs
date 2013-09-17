@@ -29,7 +29,6 @@ public class FollowPath : MonoBehaviour {
 			if (stream.finished)
 			{
 				end = true;
-				Destroy(gameObject);
 			}
 		}
 	}
@@ -39,14 +38,10 @@ public class FollowPath : MonoBehaviour {
 		stream = GetComponent<PathMovement>();
 		
 		List<Vector3> nodes = new List<Vector3>();
-		//for (int i = 0; i < path.GetComponent<NodeList>().Nodes.Length; i++)
-		//{
-		//	nodes.Add(path.GetComponent<NodeList>().Nodes[i].transform.position);
-		//}
-		
-		nodes.Add(path.GetComponent<NodeList>().Nodes[0].transform.position);
-		nodes.Add(path.GetComponent<NodeList>().Nodes[1].transform.position);
-		nodes.Add(path.GetComponent<NodeList>().Nodes[2].transform.position);
+		for (int i = 0; i < path.GetComponent<NodeList>().Nodes.Length; i++)
+		{
+			nodes.Add(path.GetComponent<NodeList>().Nodes[i].transform.position);
+		}
 		
 		end = false;
 		stream.Set(nodes, 0.04f, 0.5f);

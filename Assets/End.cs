@@ -5,7 +5,7 @@ public class End : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("Collision");
+		//Debug.Log("Collision");
 		Destroy(other.gameObject);
 	}
 }
