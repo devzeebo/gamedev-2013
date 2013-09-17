@@ -15,6 +15,7 @@ public class InputHandler
 	}
 	
 	public InputHandler () {
+		Input.simulateMouseWithTouches = false;
 		events = new List<InputEvent>();
 		
 		for (int i = 0; i < 10; i++) {
@@ -24,7 +25,15 @@ public class InputHandler
 	}
 	
 	public void handleInput() {
-	
+		
+		foreach (InputEvent e in events) {
+			if (e.phase == TouchPhase.Ended) {
+				e.active = false;
+				e.position = Vector3.zero;
+				e.deltaPosition = Vector3.zero;
+			}
+		}
+		
 		if (Input.touchCount > 0) {
 			
 			foreach (Touch touch in Input.touches) {
@@ -35,26 +44,13 @@ public class InputHandler
 				e.deltaPosition = touch.deltaPosition;
 				e.active = true;
 			}
-			
-			var results = from t in Input.touches select t.fingerId;
-			for (int i = 0; i < 10; i++) {
-				if (!results.Contains (i)) {
-					events[i].active = false;
-				}
-			}
 		}
 		
 		InputEvent me = events[MOUSE];
 		if (Input.mousePresent) {
 			
-			if (me.phase == TouchPhase.Ended) {
-				me.active = false;
-				me.position = Vector3.zero;
-				me.deltaPosition = Vector3.zero;
-			}
-			
 			if (me.active) {
-				me.deltaPosition = me.position - Input.mousePosition;
+				me.deltaPosition = Input.mousePosition - me.position;
 				
 				if (me.position != Input.mousePosition) {
 					me.phase = TouchPhase.Moved;
@@ -65,7 +61,6 @@ public class InputHandler
 			}
 			
 			if (Input.GetMouseButtonUp(0)) {
-				Debug.Log(me.phase);
 				me.phase = TouchPhase.Ended;
 			}
 			

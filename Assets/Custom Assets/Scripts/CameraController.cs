@@ -24,16 +24,8 @@ public class CameraController : MonoBehaviour {
 	}
 	
 	void Update () {
-		Debug.ClearDeveloperConsole();
 		
 		inputHandler.handleInput();
-		
-		if (inputHandler.Events.Count > 0) {
-			Debug.Log (inputHandler.Events[0].active);
-			Debug.Log (inputHandler.Events[0].position);
-			Debug.Log (inputHandler.Events[0].deltaPosition);
-			Debug.Log (inputHandler.Events[0].phase);
-		}
 		
 		foreach (InputEvent e in inputHandler.Events)
 		{
