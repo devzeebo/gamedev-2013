@@ -16,76 +16,70 @@ public class CameraController : MonoBehaviour {
 	[HideInInspector]
 	public static Transform selectedTile;
 	
-	List<int> fingerIds;
+	InputHandler inputHandler;
 	
 	void Start () {
 		menuOpen = false;
-		fingerIds = new List<int>();
+		inputHandler = new InputHandler();
 	}
 	
 	void Update () {
-		if (Input.touchCount > 0)
+		Debug.ClearDeveloperConsole();
+		
+		inputHandler.handleInput();
+		
+		if (inputHandler.Events.Count > 0) {
+			Debug.Log (inputHandler.Events[0].active);
+			Debug.Log (inputHandler.Events[0].position);
+			Debug.Log (inputHandler.Events[0].deltaPosition);
+			Debug.Log (inputHandler.Events[0].phase);
+		}
+		
+		foreach (InputEvent e in inputHandler.Events)
 		{
-			foreach (Touch touch in Input.touches)
+			Vector3 touchPoint = Camera.main.ScreenToWorldPoint(new Vector3(e.position.x, e.position.y, 40));
+			Debug.DrawLine(Camera.main.transform.position, touchPoint, Color.red);
+			
+			if (menuOpen)
 			{
-				Vector3 touchPoint = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 40));
-				Debug.DrawLine(Camera.main.transform.position, touchPoint, Color.red);
-				
-				if (menuOpen)
+				//if (touch.phase == TouchPhase.Moved)
+				//	DeleteMenu();
+				if (e.phase == TouchPhase.Ended)
 				{
-					//if (touch.phase == TouchPhase.Moved)
-					//	DeleteMenu();
-					if (touch.phase == TouchPhase.Ended)
+					RaycastHit target;
+					if (Physics.Raycast(Camera.main.transform.position, (touchPoint - Camera.main.transform.position).normalized, out target))
 					{
-						RaycastHit target;
-						if (Physics.Raycast(Camera.main.transform.position, (touchPoint - Camera.main.transform.position).normalized, out target))
+						//Debug.Log("Hit Object");
+						if (target.transform.gameObject.GetComponent<OnTouchObject>() != null)
 						{
-							//Debug.Log("Hit Object");
-							if (target.transform.gameObject.GetComponent<OnTouchObject>() != null)
-							{
-								//Debug.Log("Object is a 3D button");
-								target.transform.gameObject.GetComponent<OnTouchObject>().OnTouch();
-							}
+							//Debug.Log("Object is a 3D button");
+							target.transform.gameObject.GetComponent<OnTouchObject>().OnTouch();
 						}
-						DeleteMenu();
 					}
+					DeleteMenu();
 				}
-				else
+			}
+			else
+			{
+				if (e.phase == TouchPhase.Moved && e.deltaPosition.magnitude > 0.5f)
 				{
-					if (touch.phase == TouchPhase.Moved && touch.deltaPosition.magnitude > 0.5f)
-					{
-						Vector2 touchDeltaPosition = touch.deltaPosition;
-						Move(touchDeltaPosition);
-						fingerIds.Add(touch.fingerId);
-					}
-					if (touch.phase == TouchPhase.Ended)
-					{
-						if (fingerIds.Contains(touch.fingerId))
-						{
-							fingerIds.Remove(touch.fingerId);
+					Vector2 touchDeltaPosition = e.deltaPosition;
+					Move(touchDeltaPosition);
+				}
+				if (e.phase == TouchPhase.Ended)
+				{
+					RaycastHit target;
+					if (Physics.Raycast(Camera.main.transform.position, (touchPoint - Camera.main.transform.position).normalized, out target)) {
+						
+						if (target.transform.tag == "Tile") {
+							CreateMenu(target.transform);
 						}
-						else
-						{
-							RaycastHit target;
-							if (Physics.Raycast(Camera.main.transform.position, (touchPoint - Camera.main.transform.position).normalized, out target))
-							{
-								if (target.transform.tag == "Tile")
-								{
-									CreateMenu(target.transform);
-								}
-								else if (target.transform.tag == "Base")
-								{
-									target.transform.gameObject.GetComponent<OnTouchObject>().OnTouch();
-								}
-							}
+						else if (target.transform.tag == "Base") {
+							target.transform.gameObject.GetComponent<OnTouchObject>().OnTouch();
 						}
 					}
 				}
 			}
-		}
-		else
-		{
-			fingerIds.Clear();
 		}
 	}
 	
