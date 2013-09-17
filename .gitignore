@@ -13,3 +13,6 @@ Temp
 *.userprefs
 *.apk
 *.suo
+
+obj
+VSProject
