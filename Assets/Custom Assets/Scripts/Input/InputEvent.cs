@@ -12,6 +12,7 @@ public class InputEvent {
 	public TouchPhase phase;
 	public int clickCount;
 	public Vector3 deltaPosition;
+    public float totalMagnitude;
 	
 	internal InputEvent (Source source) {
 		this.source = source;

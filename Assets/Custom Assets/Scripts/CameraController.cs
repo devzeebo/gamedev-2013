@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour {
 					Vector2 touchDeltaPosition = e.deltaPosition;
 					Move(touchDeltaPosition);
 				}
-				if (e.phase == TouchPhase.Ended)
+				if (e.phase == TouchPhase.Ended && e.totalMagnitude < 1f)
 				{
                     GameObject o = GetTouchedObject(touchPoint);
                     if (o != null && o.GetComponent<OnTouchObject>() != null)

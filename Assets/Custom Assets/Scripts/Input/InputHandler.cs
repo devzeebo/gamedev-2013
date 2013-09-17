@@ -31,6 +31,7 @@ public class InputHandler
 				e.active = false;
 				e.position = Vector3.zero;
 				e.deltaPosition = Vector3.zero;
+                e.totalMagnitude = 0.0f;
 			}
 		}
 		
@@ -41,6 +42,7 @@ public class InputHandler
 				e.position = touch.position;
 				e.clickCount = touch.tapCount;
 				e.deltaPosition = touch.deltaPosition;
+                e.totalMagnitude += touch.deltaPosition.magnitude;
 				e.active = true;
 			}
 		}
@@ -53,6 +55,7 @@ public class InputHandler
 				
 				if (me.position != Input.mousePosition) {
 					me.phase = TouchPhase.Moved;
+                    me.totalMagnitude += me.deltaPosition.magnitude;
 				}
 				else {
 					me.phase = TouchPhase.Stationary;
