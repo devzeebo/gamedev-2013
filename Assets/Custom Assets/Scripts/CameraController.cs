@@ -26,6 +26,7 @@ public class CameraController : MonoBehaviour {
 	void Start () {
 		menuOpen = false;
 		inputHandler = new InputHandler();
+		createdMenu = null;
 	}
 	
 	void Update () {
