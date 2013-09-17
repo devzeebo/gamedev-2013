@@ -56,11 +56,13 @@ public class CameraController : MonoBehaviour {
 			{
 				if (e.phase == TouchPhase.Moved && e.deltaPosition.magnitude > 0.5f)
 				{
+					Debug.Log("MOVE");
 					Vector2 touchDeltaPosition = e.deltaPosition;
 					Move(touchDeltaPosition);
 				}
 				if (e.phase == TouchPhase.Ended && e.totalMagnitude < 1f)
 				{
+					Debug.Log("TAP");
                     GameObject o = GetTouchedObject(touchPoint);
                     if (o != null && o.GetComponent<OnTouchObject>() != null)
                     {
