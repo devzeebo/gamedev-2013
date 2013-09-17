@@ -21,7 +21,7 @@ public class LookAtEnemy : MonoBehaviour {
 			if (!attacking)
 			{
 				attacking = true;
-				Invoke("Shoot", 1f);
+				Invoke("Shoot", .25f);
 			}
 		}
 	}

@@ -15,9 +15,14 @@ public class KillOnCollide : MonoBehaviour {
 	{
 		if (other.tag == "Enemy")
 		{
-			Destroy(other.gameObject);
-			tower.RemoveTracking();
-			Destroy(gameObject);
+            Health objHealth = other.gameObject.GetComponent<Health>();
+            objHealth.currentHealth -= 25;
+
+            if (objHealth.currentHealth <= 0) {
+                Destroy(other.gameObject);
+                tower.RemoveTracking();
+                Destroy(gameObject);
+            }
 		}
 		else if (other.tag == "Terrain")
 			Destroy(gameObject);
