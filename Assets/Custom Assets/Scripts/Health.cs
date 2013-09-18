@@ -21,13 +21,13 @@ class Health : MonoBehaviour
 	void Start()
 	{
 		currentHealth = maxHealth;
-		startScale = transform.GetChild(0).localScale.y;
+        startScale = transform.parent.FindChild("healthBar").localScale.y;
 	}
 	
 	public void UpdateScale()
 	{
-		Vector3 scale = transform.GetChild(0).localScale;
+		Vector3 scale = transform.parent.FindChild("healthBar").localScale;
 		scale.y = startScale * (currentHealth / maxHealth);
-		transform.GetChild(0).localScale = scale;
+        transform.parent.FindChild("healthBar").localScale = scale;
 	}
 }

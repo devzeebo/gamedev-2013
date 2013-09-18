@@ -18,12 +18,12 @@ public class KillOnCollide : MonoBehaviour {
 		if (other.tag == "Enemy")
 		{
             Health objHealth = other.gameObject.GetComponent<Health>();
+            
             objHealth.currentHealth -= 15;
-			
 			objHealth.UpdateScale();
 
             if (objHealth.currentHealth <= 0) {
-                Destroy(other.gameObject);
+                Destroy(other.gameObject.transform.parent.gameObject);
                 tower.RemoveTracking();
             }
 			

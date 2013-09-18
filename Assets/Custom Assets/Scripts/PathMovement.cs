@@ -83,8 +83,10 @@ public class PathMovement : MonoBehaviour
 		velocity += currentForceVector;
 		velocity *= (1f-baseDrag);
 		transform.position += (speed * velocity);
-		
-		if (faceDirection)
-			transform.forward = velocity.normalized;
+
+        if (faceDirection)
+        {
+            gameObject.transform.FindChild("Model").forward = velocity.normalized;
+        }
 	}
 }
