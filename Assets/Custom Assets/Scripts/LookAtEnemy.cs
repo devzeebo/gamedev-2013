@@ -8,6 +8,8 @@ public class LookAtEnemy : MonoBehaviour {
 	bool attacking;
 	public float AimModifier;
 	public float AttackSpeed;
+
+    public float BulletSpeed = 1f;
 	
 	public GameObject ammo;
 	
@@ -46,7 +48,7 @@ public class LookAtEnemy : MonoBehaviour {
 		GameObject projectile = (GameObject)Instantiate(ammo, transform.position, transform.rotation);
 		
 		projectile.GetComponent<KillOnCollide>().tower = this;
-		projectile.rigidbody.AddForce(transform.forward * 1000f);
+		projectile.rigidbody.AddForce(transform.forward * BulletSpeed * 1000f);
 		
 		attacking = false;
 	}
