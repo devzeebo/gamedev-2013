@@ -101,7 +101,8 @@ public class PathMovement : MonoBehaviour
 	        if (faceDirection)
 	        {
 	            gameObject.transform.FindChild("Model").forward = velocity.normalized;
-	        }
+				gameObject.transform.FindChild("Model").Rotate(0, 90, 0);
+			}
 		}
 		else
 		{

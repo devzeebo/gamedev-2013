@@ -2,9 +2,12 @@
 using System.Collections;
 
 public class LookAtEnemy : MonoBehaviour {
-
-	GameObject tracking;
+	
+	public GameObject range;
+	internal GameObject tracking;
 	bool attacking;
+	public float AimModifier;
+	public float AttackSpeed;
 	
 	public GameObject ammo;
 	
@@ -14,49 +17,36 @@ public class LookAtEnemy : MonoBehaviour {
 	}
 	
 	void Update () {
+		
 		if (tracking != null)
 		{
-			transform.parent.LookAt(tracking.transform.position + tracking.transform.forward * 3.5f);
+			Debug.Log (tracking.transform.position);
+			transform.LookAt(tracking.transform.position + tracking.transform.forward * AimModifier);
 			
 			if (!attacking)
 			{
+				float attackSpeed = AttackSpeed;
+				
+				AttackModifier am = transform.parent.gameObject.GetComponent<AttackModifier>();
+				
+				if(am != null)
+				{
+					attackSpeed = am.ModifyAttackSpeed(attackSpeed);
+				}
 				attacking = true;
-				Invoke("Shoot", .25f);
+				Invoke("Shoot", attackSpeed);
 			}
 		}
 	}
 	
-	void OnTriggerEnter(Collider other)
-	{
-		Debug.Log("Trigger Enter");
-		if (other.tag == "Enemy")
-		{
-			if (tracking == null)
-				tracking = other.gameObject;
-		}
-	}
 	
-	void OnTriggerStay(Collider other)
-	{
-		if (other.tag == "Enemy")
-		{
-			if (tracking == null)
-				tracking = other.gameObject;
-		}
-	}
-	
-	void OnTriggerExit(Collider other)
-	{
-		if (other.gameObject == tracking)
-			tracking = null;
-	}
 	
 	void Shoot()
 	{
 		GameObject projectile = (GameObject)Instantiate(ammo, transform.position, transform.rotation);
 		
 		projectile.GetComponent<KillOnCollide>().tower = this;
-		projectile.rigidbody.AddForce(transform.parent.forward * 1000f);
+		projectile.rigidbody.AddForce(transform.forward * 1000f);
 		
 		attacking = false;
 	}

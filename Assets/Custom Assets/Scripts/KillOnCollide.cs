@@ -19,7 +19,15 @@ public class KillOnCollide : MonoBehaviour {
 		{
             Health objHealth = other.gameObject.GetComponent<Health>();
             
-            objHealth.currentHealth -= 15;
+			float damage = 15;
+			
+			AttackModifier am = tower.transform.parent.gameObject.GetComponent<AttackModifier>();
+			
+			if(am != null)
+			{
+				damage = am.ModifyDamage(damage);
+			}
+            objHealth.currentHealth -= damage;
 			objHealth.UpdateScale();
 
             if (objHealth.currentHealth <= 0) {

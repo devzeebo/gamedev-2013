@@ -14,7 +14,8 @@ public class BuildModule : OnTouchObject {
         if (GameObject.Find("MoneyCounter").GetComponent<Currency>().Charge(cost))
         {
             GameObject module = (GameObject)Instantiate(moduleObj, CameraController.createdMenu.Reference.transform.position + moduleObj.transform.position, CameraController.createdMenu.Reference.transform.rotation);
-            CameraController.createdMenu.Reference.GetComponent<BaseProperties>().module = module;
+            module.transform.parent = CameraController.createdMenu.Reference.transform;
+			CameraController.createdMenu.Reference.GetComponent<BaseProperties>().module = module;
         }
 	}
 }
