@@ -27,10 +27,13 @@ public class PathMovement : MonoBehaviour
 	[HideInInspector]
 	public bool moving;
 	
+	bool inverse;
+	
 	// Use this for initialization
 	void Start ()
 	{
 		moving = false;
+		inverse = false;
 	}
 	
 	public void Set(List<Vector3> path, float forcePower, float drag)
@@ -54,39 +57,86 @@ public class PathMovement : MonoBehaviour
 		InvokeRepeating("Move", 0f, 0.05f);
 	}
 	
+	public void InvertMovement()
+	{
+		inverse = !inverse;
+		if (inverse)
+			wpIndex--;
+		else
+			wpIndex++;
+	}
+	
 	public void Move()
 	{
-		moving = true;
-		if (Vector3.Distance(waypointCollection[wpIndex], transform.position) < 0.2f)
+		if (inverse)
 		{
-			//Debug.Log("goal reached");
-			wpIndex++;
-			if(wpIndex >= waypointCollection.Count)
+			moving = true;
+			if (Vector3.Distance(waypointCollection[wpIndex], transform.position) < 0.2f)
 			{
-				if (loop)
+				//Debug.Log("goal reached");
+				wpIndex--;
+				if(wpIndex < 0)
 				{
-					wpIndex = 0;
+					if (loop)
+					{
+						wpIndex = waypointCollection.Count;
+					}
+					else
+					{
+						finished = true;
+						CancelInvoke();
+						moving = false;
+						return;
+					}
+					// end of path
 				}
-				else
-				{
-					finished = true;
-					CancelInvoke();
-					moving = false;
-					return;
-				}
-				// end of path
+				defaultNormalizedPath = ((waypointCollection[wpIndex] - waypointCollection[wpIndex+1]).normalized);
 			}
-			defaultNormalizedPath = ((waypointCollection[wpIndex] - waypointCollection[wpIndex-1]).normalized);
+			currentNormalizedPath = (waypointCollection[wpIndex] - transform.position).normalized;
+			currentForceVector = ((currentNormalizedPath - defaultNormalizedPath)*0.5f + currentNormalizedPath)*forcePower;
+			velocity += currentForceVector;
+			velocity *= (1f-baseDrag);
+			transform.position += (speed * velocity);
+	
+	        if (faceDirection)
+	        {
+	            gameObject.transform.FindChild("Model").forward = velocity.normalized;
+	        }
 		}
-		currentNormalizedPath = (waypointCollection[wpIndex] - transform.position).normalized;
-		currentForceVector = ((currentNormalizedPath - defaultNormalizedPath)*0.5f + currentNormalizedPath)*forcePower;
-		velocity += currentForceVector;
-		velocity *= (1f-baseDrag);
-		transform.position += (speed * velocity);
-
-        if (faceDirection)
-        {
-            gameObject.transform.FindChild("Model").forward = velocity.normalized;
-        }
+		else
+		{
+			moving = true;
+			if (Vector3.Distance(waypointCollection[wpIndex], transform.position) < 0.2f)
+			{
+				//Debug.Log("goal reached");
+				wpIndex++;
+				if(wpIndex >= waypointCollection.Count)
+				{
+					if (loop)
+					{
+						wpIndex = 0;
+					}
+					else
+					{
+						finished = true;
+						CancelInvoke();
+						moving = false;
+						return;
+					}
+					// end of path
+				}
+				defaultNormalizedPath = ((waypointCollection[wpIndex] - waypointCollection[wpIndex-1]).normalized);
+			}
+			currentNormalizedPath = (waypointCollection[wpIndex] - transform.position).normalized;
+			currentForceVector = ((currentNormalizedPath - defaultNormalizedPath)*0.5f + currentNormalizedPath)*forcePower;
+			velocity += currentForceVector;
+			velocity *= (1f-baseDrag);
+			transform.position += (speed * velocity);
+	
+	        if (faceDirection)
+	        {
+	            gameObject.transform.FindChild("Model").forward = velocity.normalized;
+	        }
+		}
 	}
 }

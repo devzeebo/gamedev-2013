@@ -23,6 +23,7 @@ public class KillOnCollide : MonoBehaviour {
 			objHealth.UpdateScale();
 
             if (objHealth.currentHealth <= 0) {
+				other.gameObject.GetComponent<PickUpFood>().Drop();
                 Destroy(other.gameObject.transform.parent.gameObject);
                 tower.RemoveTracking();
             }
