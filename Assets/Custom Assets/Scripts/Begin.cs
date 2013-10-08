@@ -4,7 +4,7 @@ using System.Collections;
 public class Begin : MonoBehaviour {
 
 	public GameObject tileCollider;
-	
+
 	void Start () {
 		for (int i = 0; i < 25; i++)
 		{

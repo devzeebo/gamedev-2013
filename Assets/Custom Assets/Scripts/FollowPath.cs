@@ -18,8 +18,8 @@ public class FollowPath : MonoBehaviour {
 	
 	void Start () {
 		end = false;
-		
-		SetFollowingPath(Timer.GetInstance().Path);
+
+        SetFollowingPath(GameObject.Find("Path"));
 	}
 	
 	void Update () {
@@ -35,7 +35,7 @@ public class FollowPath : MonoBehaviour {
 	
 	public void SetFollowingPath(GameObject path)
 	{
-		stream = GetComponent<PathMovement>();
+        stream = gameObject.GetComponent<PathMovement>();
 		
 		List<Vector3> nodes = new List<Vector3>();
 		for (int i = 0; i < path.GetComponent<NodeList>().Nodes.Length; i++)
