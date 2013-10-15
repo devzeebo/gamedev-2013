@@ -1,48 +1,56 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class Wave : MonoBehaviour {
+public class Wave : MonoBehaviour, IEnumerator<Object>
+{
 
     public Object[] SpawnOrder;
     public float SpawnRate;
 
-    private int repeat;
     public int Repeat = 1;
 
-    internal Vector3 start;
-
+    private int repeat;
     private int index;
 
-    public void Spawn()
+    public Wave()
     {
-        Debug.LogWarning(index + " " + SpawnOrder.Length);
-        if (index == SpawnOrder.Length)
-        {
-            if (--repeat <= 0)
-            {
-                CancelInvoke();
-                return;
-            }
-            index = 0;
-        }
-
-        if (SpawnOrder[index] is Wave)
-        {
-            ((Wave)SpawnOrder[index]).SpawnAll(0);
-        }
-        else
-        {
-            GameObject createdEnemy = (GameObject)Instantiate(SpawnOrder[index], start, Quaternion.identity);
-        }
-
-        index++;
+        Reset();
     }
 
-    public void SpawnAll(float delay)
+    public Object Current
+    {
+        get { return SpawnOrder[index]; }
+    }
+
+    public void Dispose()
     {
         index = 0;
-        repeat = Repeat;
-        Debug.LogWarning("Spawning: " + delay + " " + SpawnRate);
-        InvokeRepeating("Spawn", delay, SpawnRate);
+    }
+
+    object System.Collections.IEnumerator.Current
+    {
+        get { return Current; }
+    }
+
+    public bool MoveNext()
+    {
+        index++;
+
+        bool next = index < SpawnOrder.Length;
+
+        if (!next && ++repeat < Repeat)
+        {
+            index = 0;
+            next = true;
+        }
+
+        return next;
+    }
+
+    public void Reset()
+    {
+        index = -1;
+        repeat = 0;
     }
 }
+

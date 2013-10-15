@@ -28,18 +28,30 @@ public class CameraController : MonoBehaviour {
 		inputHandler = new InputHandler();
 		createdMenu = null;
 	}
-	
+
+    WaveManager glob;
+
 	void Update () {
 		
 		inputHandler.handleInput();
-		
+
+        if (glob == null)
+        {
+            glob = GameObject.Find("Global").GetComponent<WaveManager>();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return) && !glob.IsInvoking("Spawn"))
+        {
+            glob.Start();
+        }
+
 		foreach (InputEvent e in inputHandler.Events)
 		{
 			Vector3 touchPoint = Camera.main.ScreenToWorldPoint(new Vector3(e.position.x, e.position.y, 40));
 			Debug.DrawLine(Camera.main.transform.position, touchPoint, Color.red);
-			
-			if (createdMenu != null)
-			{
+
+            if (createdMenu != null)
+            {
                 if (e.phase == TouchPhase.Ended)
                 {
                     GameObject o = GetTouchedObject(touchPoint);
@@ -51,25 +63,25 @@ public class CameraController : MonoBehaviour {
 
                     DeleteMenu();
                 }
-			}
-			else
-			{
-				if (e.phase == TouchPhase.Moved && e.deltaPosition.magnitude > 0.5f)
-				{
-					Debug.Log("MOVE");
-					Vector2 touchDeltaPosition = e.deltaPosition;
-					Move(touchDeltaPosition);
-				}
-				if (e.phase == TouchPhase.Ended && e.totalMagnitude < 1f)
-				{
-					Debug.Log("TAP");
+            }
+            else
+            {
+                if (e.phase == TouchPhase.Moved && e.deltaPosition.magnitude > 0.5f)
+                {
+                    Debug.Log("MOVE");
+                    Vector2 touchDeltaPosition = e.deltaPosition;
+                    Move(touchDeltaPosition);
+                }
+                if (e.phase == TouchPhase.Ended && e.totalMagnitude < 1f)
+                {
+                    Debug.Log("TAP");
                     GameObject o = GetTouchedObject(touchPoint);
                     if (o != null && o.GetComponent<OnTouchObject>() != null)
                     {
                         o.GetComponent<OnTouchObject>().OnTouch();
                     }
-				}
-			}
+                }
+            }
 		}
 	}
 	
