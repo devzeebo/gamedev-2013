@@ -6,6 +6,8 @@ public class KillOnCollide : MonoBehaviour {
 	public LookAtEnemy tower;
 	public GameObject dust;
 	public GameObject hit;
+	public AudioClip EnemyDeath;
+	public AudioClip EnemyHit;
 
 	void Start () {
 	}
@@ -32,6 +34,7 @@ public class KillOnCollide : MonoBehaviour {
 
             if (objHealth.currentHealth <= 0) {
 				other.gameObject.GetComponent<PickUpFood>().Drop();
+				AudioSource.PlayClipAtPoint(EnemyDeath, Camera.main.transform.position);
                 Destroy(other.gameObject.transform.parent.gameObject);
                 tower.RemoveTracking();
             }
