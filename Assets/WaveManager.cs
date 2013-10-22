@@ -16,6 +16,8 @@ public class WaveManager : MonoBehaviour
 	private long nextInvokeInterval;
 	
 	private bool paused;
+	
+	public AudioClip WaveStart;
 
     public WaveManager()
     {
@@ -26,6 +28,7 @@ public class WaveManager : MonoBehaviour
     {
         if (waveStack.Count == 0 && CurrentWave < waves.Count)
         {
+			AudioSource.PlayClipAtPoint(WaveStart, Camera.main.transform.position);
             waveStack.Push(waves[CurrentWave++]);
             waveStack.Peek().Reset();
         }
