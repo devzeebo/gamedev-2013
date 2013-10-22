@@ -13,6 +13,8 @@ public class InputEvent {
 	public int clickCount;
 	public Vector3 deltaPosition;
     public float totalMagnitude;
+
+    public long clickTime;
 	
 	internal InputEvent (Source source) {
 		this.source = source;

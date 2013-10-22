@@ -2,47 +2,42 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(InputHandler))]
 public class CameraController : MonoBehaviour {
+	
+	public float speed = 0.15f;
+
+    public int MenuDelay = 1000;
 
     [HideInInspector]
-    public static Menu createdMenu;
-    public static Menu ActiveMenu
-    {
-        get { return createdMenu; }
-        set
-        {
-            createdMenu = value;
-            Debug.Log("Created New Menu: " + value);
-        }
-    }
-	
-	public float speed;
-	
-	[HideInInspector]
-	public static bool menuOpen;
-	
-	InputHandler inputHandler;
-	
+    public InputHandler inputHandler;
+
+    [HideInInspector]
+    public Menu ActiveMenu;
+
 	void Start () {
-		menuOpen = false;
-		inputHandler = new InputHandler();
-		createdMenu = null;
+        inputHandler = GetComponent<InputHandler>();
 	}
 
-    WaveManager glob;
+    WaveManager waveManager;
+    InteractionGrid grid;
 
 	void Update () {
 		
 		inputHandler.handleInput();
 
-        if (glob == null)
+        if (waveManager == null)
         {
-            glob = GameObject.Find("Global").GetComponent<WaveManager>();
+            waveManager = GameObject.Find("Global").GetComponent<WaveManager>();
+        }
+        if (grid == null)
+        {
+            grid = GameObject.Find("Global").GetComponent<InteractionGrid>();
         }
 
-        if (Input.GetKeyDown(KeyCode.Return) && !glob.IsInvoking("Spawn"))
+        if (Input.GetKeyDown(KeyCode.Return) && !waveManager.IsInvoking("Spawn"))
         {
-            glob.Start();
+            waveManager.Start();
         }
 
 		foreach (InputEvent e in inputHandler.Events)
@@ -50,36 +45,24 @@ public class CameraController : MonoBehaviour {
 			Vector3 touchPoint = Camera.main.ScreenToWorldPoint(new Vector3(e.position.x, e.position.y, 40));
 			Debug.DrawLine(Camera.main.transform.position, touchPoint, Color.red);
 
-            if (createdMenu != null)
+            if (ActiveMenu != null)
             {
                 if (e.phase == TouchPhase.Ended)
                 {
-                    GameObject o = GetTouchedObject(touchPoint);
-                    if (o.tag == "Button")
-                    {
-                        OnTouchObject touchEvent = o.GetComponent<OnTouchObject>();
-                        touchEvent.OnTouch();
-                    }
-
-                    DeleteMenu();
+                    grid.CreateObject(e.position);
+                    ActiveMenu = null;
                 }
             }
             else
             {
-                if (e.phase == TouchPhase.Moved && e.deltaPosition.magnitude > 0.5f)
+                if (e.phase == TouchPhase.Moved)
                 {
-                    Debug.Log("MOVE");
                     Vector2 touchDeltaPosition = e.deltaPosition;
                     Move(touchDeltaPosition);
                 }
-                if (e.phase == TouchPhase.Ended && e.totalMagnitude < 1f)
+                if (e.phase == TouchPhase.Stationary && Utilities.GetCurrentTimeMillis() - e.clickTime > MenuDelay)
                 {
-                    Debug.Log("TAP");
-                    GameObject o = GetTouchedObject(touchPoint);
-                    if (o != null && o.GetComponent<OnTouchObject>() != null)
-                    {
-                        o.GetComponent<OnTouchObject>().OnTouch();
-                    }
+                    ActiveMenu = grid.OpenMenuAt(e.position);
                 }
             }
 		}
@@ -100,10 +83,4 @@ public class CameraController : MonoBehaviour {
 
         return null;
     }
-	
-	public static void DeleteMenu()
-	{
-		Destroy(createdMenu.gameObject);
-        createdMenu = null;
-	}
 }
