@@ -14,9 +14,11 @@ public class InteractionGrid : MonoBehaviour
 
     public GameObject Terrain;
 
+    private Bounds bounds;
+
     public void Start()
     {
-        Bounds bounds = Terrain.GetComponent<Collider>().bounds;
+        bounds = Terrain.GetComponent<Collider>().bounds;
         gameObjects = new GameObject[getGridCell(bounds.size.x), getGridCell(bounds.size.z)];
 
         Debug.Log("Size: " + getGridCell(bounds.size.x) + " : " + getGridCell(bounds.size.z));
@@ -33,8 +35,8 @@ public class InteractionGrid : MonoBehaviour
 
         Debug.Log("Hit: " + position);
 
-        int x = getGridCell(position.x - Terrain.transform.position.x);
-        int y = getGridCell(position.z - Terrain.transform.position.z);
+        int x = getGridCell(position.x + bounds.size.x / 2);
+        int y = getGridCell(position.z + bounds.size.z / 2);
 
         GameObject obj = gameObjects[x, y];
 
@@ -88,7 +90,7 @@ public class InteractionGrid : MonoBehaviour
     Vector3 getGridPosition(Vector2 grid)
     {
         Vector3 worldPos = new Vector3(grid.x * GridSize + GridSize / 2, 0, grid.y * GridSize + GridSize / 2);
-        worldPos += Terrain.transform.position;
+        worldPos -= bounds.size / 2;
 
         return worldPos;
     }
