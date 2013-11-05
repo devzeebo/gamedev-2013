@@ -16,7 +16,7 @@ public class InteractionGrid : MonoBehaviour
 
     public void Start()
     {
-        Bounds bounds = Terrain.GetComponent<TerrainCollider>().bounds;
+        Bounds bounds = Terrain.GetComponent<Collider>().bounds;
         gameObjects = new GameObject[getGridCell(bounds.size.x), getGridCell(bounds.size.z)];
 
         Debug.Log("Size: " + getGridCell(bounds.size.x) + " : " + getGridCell(bounds.size.z));
@@ -30,6 +30,8 @@ public class InteractionGrid : MonoBehaviour
         Terrain.collider.Raycast(Camera.main.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0)),
             out hitInfo, 1000);
         Vector3 position = hitInfo.point;
+
+        Debug.Log("Hit: " + position);
 
         int x = getGridCell(position.x - Terrain.transform.position.x);
         int y = getGridCell(position.z - Terrain.transform.position.z);

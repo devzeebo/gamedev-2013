@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour {
 	
 	public float speed = 0.15f;
 
-    public int MenuDelay = 1000;
+    public int MenuDelay = 200;
 
     [HideInInspector]
     public InputHandler inputHandler;
@@ -62,6 +62,7 @@ public class CameraController : MonoBehaviour {
                 }
                 if (e.phase == TouchPhase.Stationary && Utilities.GetCurrentTimeMillis() - e.clickTime > MenuDelay)
                 {
+                    Debug.Log("ACTIVE");
                     ActiveMenu = grid.OpenMenuAt(e.position);
                 }
             }

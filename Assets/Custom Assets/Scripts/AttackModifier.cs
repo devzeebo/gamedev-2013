@@ -3,7 +3,6 @@ using System.Collections;
 
 public class AttackModifier : MonoBehaviour {
 	
-	
 	public float damageModifier;
 	public float ModifyDamage(float damage)
 	{

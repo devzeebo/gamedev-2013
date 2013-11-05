@@ -9,6 +9,8 @@ public class LookAtEnemy : MonoBehaviour {
 	public float AimModifier;
 	public float AttackSpeed;
 
+    public AudioClip SquirrelThrow;
+
     public float BulletSpeed = 1f;
 	
 	public GameObject ammo;
@@ -46,7 +48,7 @@ public class LookAtEnemy : MonoBehaviour {
 	void Shoot()
 	{
 		GameObject projectile = (GameObject)Instantiate(ammo, transform.position, transform.rotation);
-		
+        AudioSource.PlayClipAtPoint(SquirrelThrow, Camera.main.transform.position, .5f);
 		projectile.GetComponent<KillOnCollide>().tower = this;
 		projectile.rigidbody.AddForce(transform.forward * BulletSpeed * 1000f);
 		
