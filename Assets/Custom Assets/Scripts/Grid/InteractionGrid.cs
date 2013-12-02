@@ -67,10 +67,7 @@ public class InteractionGrid : MonoBehaviour
 
             if (obj != null)
             {
-                BaseProperties props = obj.GetComponent<BaseProperties>();
-                props.Module = (GameObject)Instantiate(spawn,
-                    obj.transform.position + props.SpawnPosition,
-                    Quaternion.identity);
+                obj.GetComponent<BaseProperties>().SpawnModule(spawn);
             }
             else
             {

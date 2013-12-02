@@ -32,4 +32,11 @@ public class BaseProperties : OnTouchObject {
 	
 	void Update () {
 	}
+
+    public virtual void SpawnModule(GameObject obj)
+    {
+        Module = (GameObject)Instantiate(obj,
+            transform.position + SpawnPosition,
+            Quaternion.identity);
+    }
 }
