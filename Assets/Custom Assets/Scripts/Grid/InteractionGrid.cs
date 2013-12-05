@@ -14,14 +14,16 @@ public class InteractionGrid : MonoBehaviour
 
     public GameObject Terrain;
 
+	private Bounds Bounds;
+
 	private Description desc;
 
     public void Start()
     {
-        Bounds bounds = Terrain.GetComponent<Collider>().bounds;
-        gameObjects = new GameObject[getGridCell(bounds.size.x), getGridCell(bounds.size.z)];
+        Bounds = Terrain.GetComponent<Collider>().bounds;
+		gameObjects = new GameObject[getGridCell(Bounds.size.x), getGridCell(Bounds.size.z)];
 
-        Debug.Log("Size: " + getGridCell(bounds.size.x) + " : " + getGridCell(bounds.size.z));
+		Debug.Log("Size: " + getGridCell(Bounds.size.x) + " : " + getGridCell(Bounds.size.z));
 
         menu = Menu.GetComponent<Menu>();
     }
@@ -35,8 +37,8 @@ public class InteractionGrid : MonoBehaviour
 
         Debug.Log("Hit: " + position);
 
-        int x = getGridCell(position.x - Terrain.transform.position.x);
-        int y = getGridCell(position.z - Terrain.transform.position.z);
+		int x = getGridCell(position.x + Bounds.size.x / 2);
+		int y = getGridCell(position.z + Bounds.size.z / 2);
 
         GameObject obj = gameObjects[x, y];
 
@@ -87,7 +89,7 @@ public class InteractionGrid : MonoBehaviour
 
     Vector3 getGridPosition(Vector2 grid)
     {
-        Vector3 worldPos = new Vector3(grid.x * GridSize + GridSize / 2, 0, grid.y * GridSize + GridSize / 2);
+        Vector3 worldPos = new Vector3(grid.x * GridSize + GridSize / 2 - Bounds.size.x / 2, 0, grid.y * GridSize + GridSize / 2 - Bounds.size.z / 2);
         worldPos += Terrain.transform.position;
 
         return worldPos;
