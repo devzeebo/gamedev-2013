@@ -36,7 +36,6 @@ public class StandardShoot : MonoBehaviour {
 
 		Projectile proj = projectile.GetComponent<Projectile>();
 		proj.Module = gameObject.GetComponent<ModuleProperties>();
-		proj.Base = gameObject.GetComponent<BaseProperties>();
 
 		Invoke("Shoot", CalculateAttackSpeed());
 	}

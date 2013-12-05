@@ -10,6 +10,8 @@ public class ClosestEnemy : TargetingScript
             return null;
         }
 
+		enemies.RemoveAll((obj) => obj == null);
+
         enemies.Sort((one, two) =>
             (int)(Vector3.Distance(transform.position, one.transform.position) -
                 Vector3.Distance(transform.position, two.transform.position))
