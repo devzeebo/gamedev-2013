@@ -2,36 +2,30 @@
 using System.Collections;
 
 public class AcquireEnemy : MonoBehaviour {
-	
-	LookAtEnemy ModuleAttack;
-	
-	public void Start()
-	{
-		ModuleAttack = transform.parent.gameObject.GetComponent<LookAtEnemy>();
+
+	private ModuleProperties Module;
+
+	public void Start() {
+		Module = transform.parent.GetComponent<ModuleProperties>();
 	}
-	
+
 	void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("Trigger Enter");
 		if (other.tag == "Enemy")
 		{
-			if (ModuleAttack.tracking == null)
-				ModuleAttack.tracking = other.gameObject;
-		}
-	}
-	
-	void OnTriggerStay(Collider other)
-	{
-		if (other.tag == "Enemy")
-		{
-			if (ModuleAttack.tracking == null)
-				ModuleAttack.tracking = other.gameObject;
+			Module.targets.Add(other.gameObject);
 		}
 	}
 	
 	void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject == ModuleAttack.tracking)
-			ModuleAttack.tracking = null;
+		if (Module.targets.Contains(other.gameObject))
+		{
+			Module.targets.Remove(other.gameObject);
+
+			if (Module.CurrentTarget == other.gameObject) {
+				Module.CurrentTarget = null;
+			}
+		}
 	}
 }

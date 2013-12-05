@@ -9,35 +9,30 @@ public class ModuleProperties : MonoBehaviour {
 
     public float AttackSpeed;
 
-    private List<GameObject> targets;
+    internal List<GameObject> targets;
+
+	[HideInInspector]
+	public GameObject CurrentTarget;
 
     public TargetingScript TargetingScript;
+
+	[HideInInspector]
+	public BaseProperties Base;
 
 	// Use this for initialization
 	void Start () {
         range = gameObject.GetComponentInChildren<SphereCollider>();
 
         targets = new List<GameObject>();
+
+		Base = transform.parent.gameObject.GetComponent<BaseProperties>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	    
+
+		if (CurrentTarget == null && targets.Count > 0) {
+			CurrentTarget = TargetingScript.GetNextEnemy(targets);
+		}
 	}
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Enemy")
-        {
-            targets.Add(other.gameObject);
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (targets.Contains(other.gameObject))
-        {
-            targets.Remove(other.gameObject);
-        }
-    }
 }

@@ -7,24 +7,27 @@ public class Currency : MonoBehaviour {
 
     [HideInInspector]
     int money;
-    public int moneyOverTime;
+    public int moneyOverTime = 1;
 
-    public float time;
+    public float time = 1;
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
         money = StartingMoney;
         InvokeRepeating("MoneyOverTime", 0f, time);
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update() {
+	}
+
+	void OnGUI() {
+		GUI.Box(new Rect(10, 10, 100, 20), "$$$: " + money);
 	}
 
     void MoneyOverTime()
     {
         money += moneyOverTime;
-        gameObject.GetComponent<UILabel>().text = "" + money;
     }
 
     public bool Charge(int cost)
@@ -32,7 +35,6 @@ public class Currency : MonoBehaviour {
         if (money >= cost)
         {
             money -= cost;
-            gameObject.GetComponent<UILabel>().text = "" + money;
 
             return true;
         }

@@ -34,11 +34,13 @@ public class Experience : MonoBehaviour {
     }
     
     public void GiveExperienceHit(string type, float damage, float enemyHealth, float enemyExperience) {
-		
+
 		if (!currentExperience.ContainsKey(type)) {
             currentExperience[type] = 0;
         }
         currentExperience[type] += damage / enemyHealth * enemyExperience;
+
+		Debug.Log ("Experience " + type + " " + currentExperience [type]);
     }
     
     public void GiveExperienceKill(string type, float enemyExperience) {

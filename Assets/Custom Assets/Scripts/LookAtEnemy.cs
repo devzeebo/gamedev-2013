@@ -43,8 +43,6 @@ public class LookAtEnemy : MonoBehaviour {
 		}
 	}
 	
-	
-	
 	void Shoot()
 	{
 		GameObject projectile = (GameObject)Instantiate(ammo, transform.position, transform.rotation);
