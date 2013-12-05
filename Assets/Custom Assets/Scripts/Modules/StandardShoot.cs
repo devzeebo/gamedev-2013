@@ -24,7 +24,7 @@ public class StandardShoot : MonoBehaviour {
 
 	}
 
-	virtual void Shoot() {
+	protected virtual void Shoot() {
 		if (Module.CurrentTarget == null) {
 			Invoke("Shoot", .1f);
 			return;
@@ -36,6 +36,7 @@ public class StandardShoot : MonoBehaviour {
 
 		Projectile proj = projectile.GetComponent<Projectile>();
 		proj.Module = gameObject.GetComponent<ModuleProperties>();
+		proj.Damage = CalculateDamage();
 
 		Invoke("Shoot", CalculateAttackSpeed());
 	}
@@ -51,5 +52,19 @@ public class StandardShoot : MonoBehaviour {
 		}
 
 		return attackSpeed;
+	}
+
+	protected float CalculateDamage() {
+		
+		float damage = Module.Damage;
+		
+		AttackModifier am = Module.Base.gameObject.GetComponent<AttackModifier>();
+		
+		if(am != null)
+		{
+			damage = am.ModifyDamage(damage);
+		}
+		
+		return damage;
 	}
 }

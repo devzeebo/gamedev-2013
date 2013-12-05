@@ -20,6 +20,8 @@ public class Projectile : MonoBehaviour {
 
 	public BaseProperties Base;
 
+	public float Damage;
+
 	private Experience xp;
 
 	// Use this for initialization
@@ -44,10 +46,8 @@ public class Projectile : MonoBehaviour {
 
 		Health objHealth = other.gameObject.GetComponent<Health>();
 
-		float damage = CalculateDamage();
-
-		xp.GiveExperienceHit(Base.gameObject.GetComponent<Description>().name, damage, objHealth.maxHealth, 10);
-		objHealth.currentHealth -= damage;
+		xp.GiveExperienceHit(Base.gameObject.GetComponent<Description>().name, Damage, objHealth.maxHealth, 10);
+		objHealth.currentHealth -= Damage;
 		objHealth.UpdateScale();
 		
 		if (objHealth.currentHealth <= 0) {
@@ -64,19 +64,5 @@ public class Projectile : MonoBehaviour {
 	void HitTerrain(GameObject other) {
 		Instantiate(MissEffect, transform.position, transform.rotation);
 		Destroy(gameObject);
-	}
-
-	float CalculateDamage() {
-
-		float damage = Module.Damage;
-
-		AttackModifier am = Base.gameObject.GetComponent<AttackModifier>();
-		
-		if(am != null)
-		{
-			damage = am.ModifyDamage(damage);
-		}
-
-		return damage;
 	}
 }
