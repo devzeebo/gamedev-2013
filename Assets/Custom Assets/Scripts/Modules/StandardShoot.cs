@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(ModuleProperties))]
 public class StandardShoot : MonoBehaviour {
 
-	private ModuleProperties Module;
+	protected ModuleProperties Module;
 
 	public GameObject Ammo;
 
@@ -24,7 +24,7 @@ public class StandardShoot : MonoBehaviour {
 
 	}
 
-	void Shoot() {
+	virtual void Shoot() {
 		if (Module.CurrentTarget == null) {
 			Invoke("Shoot", .1f);
 			return;
@@ -40,7 +40,7 @@ public class StandardShoot : MonoBehaviour {
 		Invoke("Shoot", CalculateAttackSpeed());
 	}
 
-	float CalculateAttackSpeed() {
+	protected float CalculateAttackSpeed() {
 		float attackSpeed = Module.AttackSpeed;
 		
 		AttackModifier am = transform.parent.gameObject.GetComponent<AttackModifier>();
