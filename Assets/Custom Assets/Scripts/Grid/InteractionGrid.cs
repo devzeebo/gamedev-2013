@@ -14,6 +14,8 @@ public class InteractionGrid : MonoBehaviour
 
     public GameObject Terrain;
 
+	private Description desc;
+
     public void Start()
     {
         Bounds bounds = Terrain.GetComponent<Collider>().bounds;
@@ -56,6 +58,7 @@ public class InteractionGrid : MonoBehaviour
 
     public void CreateObject(Vector2 position)
     {
+		desc = null;
         if (Vector2.Distance(position, activeMenu.initialPosition) > activeMenu.DeadZone)
         {
             int x = (int)(activeMenu.gridPosition.x);
@@ -94,4 +97,20 @@ public class InteractionGrid : MonoBehaviour
     {
         return (int)(value / GridSize);
     }
+
+	public void displayToolTip(Vector2 position)
+	{
+		if (Vector2.Distance(position, activeMenu.initialPosition) > activeMenu.DeadZone)
+		{
+			desc = activeMenu.GetIcon(position).GetComponent<Icon>().SpawnObject.GetComponent<Description>();
+
+		}
+	}
+
+	void OnGUI(){
+		if(desc !=null)
+		{
+			GUI.Box (new Rect (0 ,0, Screen.width,25), desc.description);
+		}
+	}
 }

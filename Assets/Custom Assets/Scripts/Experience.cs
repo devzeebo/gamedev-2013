@@ -20,11 +20,11 @@ public class Experience : MonoBehaviour {
 	
 	void OnGUI() {
     	
-		GUI.Box (new Rect (Screen.width / 2, Screen.height / 2,100,90), "Loader Menu");
+		//GUI.Box (new Rect (Screen.width / 2, Screen.height / 2,100,90), "Loader Menu");
         foreach(KeyValuePair<string, float> entry in currentExperience)
         {
-            //GUI.Label (new Rect (Screen.width / 2, Screen.height / 2, 100,100), /*entry.Key + " " + entry.Value*/ "testing");
-			//GUI.Label (Rect (0,0,100,50), "This is the text string for a Label Control");
+			GUI.Box (new Rect (Screen.width / 2, Screen.height / 2,100,90), entry.Key + " " + entry.Value);
+            //GUI.Label (new Rect (Screen.width / 2, Screen.height / 2, 100,100), entry.Key + " " + entry.Value);
         }
     }
     

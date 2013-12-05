@@ -47,7 +47,11 @@ public class CameraController : MonoBehaviour {
 
             if (ActiveMenu != null)
             {
-                if (e.phase == TouchPhase.Ended)
+				if(e.phase == TouchPhase.Moved)
+				{
+					grid.displayToolTip(e.position);
+				}
+				if (e.phase == TouchPhase.Ended)
                 {
                     grid.CreateObject(e.position);
                     ActiveMenu = null;
