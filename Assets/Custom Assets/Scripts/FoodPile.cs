@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class FoodPile : MonoBehaviour {
 	
 	public int FoodAmount;
 	
-	public GameObject[] foods;
-	
+	public List<GameObject> foods;
+
+	[HideInInspector]
+	public List<GameObject> FoodObjects;
+
 	void Start () {
+		FoodObjects = new List<GameObject>();
+
 		SpawnFood();
 	}
 	
@@ -20,12 +25,12 @@ public class FoodPile : MonoBehaviour {
 		
 		for (int i = 0; i < FoodAmount; i++)
 		{
-			int foodNum = Random.Range(0, foods.Length);
+			int foodNum = Random.Range(0, foods.Count);
 			
 			Vector3 position = new Vector3(Random.Range(-region.radius, region.radius), Random.Range(-region.radius, region.radius), Random.Range(-region.radius, region.radius));
 			position += transform.position;
 			
-			Instantiate(foods[foodNum], position, Quaternion.identity);
+			FoodObjects.Add((GameObject)Instantiate(foods[foodNum], position, Quaternion.identity));
 		}
 	}
 }

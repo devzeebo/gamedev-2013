@@ -64,6 +64,8 @@ public class PathMovement : MonoBehaviour
 			wpIndex--;
 		else
 			wpIndex++;
+
+		gameObject.GetComponentInChildren<PickUpFood>().CanPickUpFood = true;
 	}
 	
 	public void Move()
@@ -86,6 +88,16 @@ public class PathMovement : MonoBehaviour
 						finished = true;
 						CancelInvoke();
 						moving = false;
+
+						Transform hfTransform = gameObject.GetComponentInChildren<PickUpFood>().food;
+						if (hfTransform != null) {
+							GameObject heldFood = hfTransform.gameObject;
+							GameObject.Find("Food Pile").GetComponent<FoodPile>().FoodObjects.Remove(heldFood);
+							Destroy(heldFood);
+						}
+
+						Destroy (gameObject);
+
 						return;
 					}
 					// end of path

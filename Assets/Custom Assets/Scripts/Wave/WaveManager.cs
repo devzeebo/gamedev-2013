@@ -97,4 +97,8 @@ public class WaveManager : MonoBehaviour
             }
         }
     }
+
+	public bool IsDone() {
+		return waveStack.Count == 0;
+	}
 }

@@ -5,20 +5,21 @@ public class PickUpFood : MonoBehaviour {
 	
 	[HideInInspector]
 	public Transform food;
-	
-	void Start () {
+
+	[HideInInspector]
+	public bool CanPickUpFood;
+
+	void Start() {
 		food = null;
 	}
 	
-	void Update () {
+	void Update() {
 	}
 	
 	void OnCollisionEnter(Collision other)
 	{
 		if (other.transform.tag == "Food")
 		{
-            Debug.Log("COLLISION WITH FOOD");
-
 			if (food == null && other.transform.GetComponent<FoodProperties>().heldBy == null)
 			{
 				food = other.transform;
