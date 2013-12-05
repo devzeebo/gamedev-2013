@@ -9,7 +9,6 @@ public class MainMenu : MonoBehaviour {
 	
 	void OnGUI () 
 	{	
-		
 		if(isMainMenu)
 		{
 			// Make a background box
@@ -35,7 +34,7 @@ public class MainMenu : MonoBehaviour {
 			{ 	
 				if (GUI.Button(new Rect(Screen.width/2-10,Screen.height/2+30,80,20), "Levels 1"))
 				{
-					Application.LoadLevel(1);
+					Application.LoadLevel("Level");
 				}
 				if (GUI.Button(new Rect(Screen.width/2-10,Screen.height/2+60,80,20), "Level 2"))
 				{
