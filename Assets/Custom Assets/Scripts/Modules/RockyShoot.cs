@@ -5,7 +5,7 @@ public class RockyShoot : StandardShoot {
 
 	private GameObject CurrentTarget;
 
-	private int CurrentStacks;
+	public int CurrentStacks = 0;
 
 	public float AttackSpeedIncreasePerStack = 0.05f;
 
@@ -32,7 +32,9 @@ public class RockyShoot : StandardShoot {
 		Projectile proj = projectile.GetComponent<Projectile>();
 		proj.Module = gameObject.GetComponent<ModuleProperties>();
 		proj.Damage = CalculateDamage() + DamageIncreasePerStack * CurrentStacks;
-		
+
+		CurrentStacks = Mathf.Min(CurrentStacks + 1, MaxStacks);
+
 		Invoke("Shoot", CalculateAttackSpeed() - AttackSpeedIncreasePerStack * CurrentStacks);
 	}
 }

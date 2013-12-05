@@ -48,7 +48,7 @@ public class Menu : MonoBehaviour
 
     public GameObject GetIcon(Vector2 position)
     {
-        float calcAngle = (getAngle(initialPosition, position) - ANGLE_OFFSET - angle / 2);
+        float calcAngle = (getAngle(initialPosition, position) - ANGLE_OFFSET + angle / 2);
         if (calcAngle < 0)
         {
             calcAngle += Mathf.PI * 2;

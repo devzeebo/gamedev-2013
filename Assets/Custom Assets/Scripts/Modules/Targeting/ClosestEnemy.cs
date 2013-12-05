@@ -13,8 +13,8 @@ public class ClosestEnemy : TargetingScript
 		}
 
         enemies.Sort((one, two) =>
-            (int)(Vector3.Distance(transform.position, one.transform.position) -
-                Vector3.Distance(transform.position, two.transform.position))
+            (int)(Vector3.Distance(transform.position, two.transform.position) -
+                Vector3.Distance(transform.position, one.transform.position))
         );
 
         return enemies[0];
