@@ -6,6 +6,8 @@ public class BaseProperties : OnTouchObject {
 	public GameObject menu;
 
     public Vector3 SpawnPosition;
+	
+	public string type;
 
     [HideInInspector]
     public GameObject Module

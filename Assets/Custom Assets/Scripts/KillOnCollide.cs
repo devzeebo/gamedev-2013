@@ -8,8 +8,13 @@ public class KillOnCollide : MonoBehaviour {
 	public GameObject hit;
 	public AudioClip EnemyDeath;
 	public AudioClip EnemyHit;
+	public BaseProperties BaseProp;
+	
+	private Experience xp;  
+	
 
 	void Start () {
+		xp = GameObject.Find("Global").GetComponent<Experience>();
 	}
 	
 	void Update () {
@@ -29,6 +34,8 @@ public class KillOnCollide : MonoBehaviour {
 			{
 				damage = am.ModifyDamage(damage);
 			}
+			
+			//xp.GiveExperienceHit(BaseProp.type, damage, objHealth.maxHealth, 10);
             objHealth.currentHealth -= damage;
 			objHealth.UpdateScale();
 
@@ -37,6 +44,7 @@ public class KillOnCollide : MonoBehaviour {
 				AudioSource.PlayClipAtPoint(EnemyDeath, Camera.main.transform.position);
                 Destroy(other.gameObject.transform.parent.gameObject);
                 tower.RemoveTracking();
+				//xp.GiveExperienceKill(BaseProp.type, 10);
             }
 			
 			Instantiate(hit, transform.position, transform.rotation);
