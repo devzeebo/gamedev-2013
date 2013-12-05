@@ -20,6 +20,8 @@ public class PathMovement : MonoBehaviour
 	public bool loop;
 	
 	public bool faceDirection = true;
+
+	public Vector3 ExtraRotation;
 	
 	[HideInInspector]
 	public bool finished;
@@ -113,7 +115,7 @@ public class PathMovement : MonoBehaviour
 	        if (faceDirection)
 	        {
 	            gameObject.transform.FindChild("Model").forward = velocity.normalized;
-				gameObject.transform.FindChild("Model").Rotate(0, 90, 0);
+				gameObject.transform.FindChild("Model").Rotate(ExtraRotation);
 			}
 		}
 		else
@@ -149,7 +151,7 @@ public class PathMovement : MonoBehaviour
 	        if (faceDirection)
 	        {
 	            gameObject.transform.FindChild("Model").forward = velocity.normalized;
-				gameObject.transform.FindChild("Model").Rotate(0, 90, 0);
+				gameObject.transform.FindChild("Model").Rotate(ExtraRotation);
 	        }
 		}
 	}
