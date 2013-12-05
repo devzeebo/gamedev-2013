@@ -62,31 +62,26 @@ public class WaveManager : MonoBehaviour
 
     void Spawn()
     {
-        Debug.Log("Spawn");
         if (waveStack.Count > 0)
         {
             Wave current = waveStack.Peek();
 
             if (current.MoveNext())
             {
-                Debug.Log("Next");
                 if (current.Current is Wave)
                 {
-                    Debug.Log("Spawned wave");
                     waveStack.Push(current.Current as Wave);
                     Spawn();
                     return;
                 }
                 else
                 {
-                    Debug.Log("Spawned enemy");
                     GameObject createdEnemy = (GameObject)Instantiate(current.Current, gameObject.transform.position, Quaternion.identity);
                     nextInvokeInterval = Utilities.GetCurrentTimeMillis() + (long)(waveStack.Peek().SpawnRate * 1000);
                 }
             }
             else
             {
-                Debug.Log("No Next :(");
                 waveStack.Peek().Reset();
                 waveStack.Pop();
             }

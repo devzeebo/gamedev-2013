@@ -23,8 +23,6 @@ public class InteractionGrid : MonoBehaviour
         Bounds = Terrain.GetComponent<Collider>().bounds;
 		gameObjects = new GameObject[getGridCell(Bounds.size.x), getGridCell(Bounds.size.z)];
 
-		Debug.Log("Size: " + getGridCell(Bounds.size.x) + " : " + getGridCell(Bounds.size.z));
-
         menu = Menu.GetComponent<Menu>();
     }
 
@@ -34,8 +32,6 @@ public class InteractionGrid : MonoBehaviour
         Terrain.collider.Raycast(Camera.main.ScreenPointToRay(new Vector3(screenPosition.x, screenPosition.y, 0)),
             out hitInfo, 1000);
         Vector3 position = hitInfo.point;
-
-        Debug.Log("Hit: " + position);
 
 		int x = getGridCell(position.x + Bounds.size.x / 2);
 		int y = getGridCell(position.z + Bounds.size.z / 2);
