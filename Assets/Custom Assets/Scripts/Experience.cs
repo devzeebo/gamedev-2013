@@ -23,8 +23,15 @@ public class Experience : MonoBehaviour {
 		//GUI.Box (new Rect (Screen.width / 2, Screen.height / 2,100,90), "Loader Menu");
         foreach(KeyValuePair<string, float> entry in currentExperience)
         {
-			GUI.Box (new Rect (Screen.width / 2, Screen.height / 2,100,90), entry.Key + " " + entry.Value);
-            //GUI.Label (new Rect (Screen.width / 2, Screen.height / 2, 100,100), entry.Key + " " + entry.Value);
+			if(entry.Key == "Stump")
+			{
+				GUI.Box (new Rect (0, 0,100, 30 ), entry.Key + " " + entry.Value);
+			}
+			else
+			{
+				GUI.Box (new Rect (0, 30,100, 30 ), entry.Key + " " + entry.Value);
+			}
+
         }
     }
     

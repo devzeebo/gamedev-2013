@@ -3,25 +3,30 @@ using System.Collections;
 
 
 public class MainMenu : MonoBehaviour {
-
-	public Texture2D myTexture;
+	
+	public GUIStyle background;
 	
 	bool level = false;
 	bool isMainMenu = true;
+
+	void Start(){
+	}
+
 	
 	void OnGUI () 
 	{	
 		// Make a background box
-		GUI.Box(new Rect(0,0,Screen.width,Screen.height), "");
+		GUI.Box(new Rect(0,0,Screen.width,Screen.height)," ", background);
 
 		if(isMainMenu)
 		{
 	
 			// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
-			if(GUI.Button(new Rect(Screen.width/3,Screen.height/5,Screen.width/3,Screen.height/4), "Levels")) 
+			if(GUI.Button(new Rect(Screen.width/3,Screen.height/5,Screen.width/3,Screen.height/4), "Play")) 
 			{
-				level = true;
-				isMainMenu = false;
+				Application.LoadLevel("Level");
+				/*level = true;
+				isMainMenu = false;*/
 			}
 	
 			// Make the second button.
