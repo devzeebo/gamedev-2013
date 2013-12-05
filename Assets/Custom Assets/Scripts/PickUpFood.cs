@@ -18,6 +18,7 @@ public class PickUpFood : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision other)
 	{
+		Debug.Log ("Collide!");
 		if (other.transform.tag == "Food")
 		{
 			if (food == null && other.transform.GetComponent<FoodProperties>().heldBy == null)

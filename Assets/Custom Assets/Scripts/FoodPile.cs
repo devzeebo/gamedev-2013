@@ -27,7 +27,7 @@ public class FoodPile : MonoBehaviour {
 		{
 			int foodNum = Random.Range(0, foods.Count);
 			
-			Vector3 position = new Vector3(Random.Range(-region.radius, region.radius), Random.Range(-region.radius, region.radius), Random.Range(-region.radius, region.radius));
+			Vector3 position = new Vector3(Random.Range(-region.radius, region.radius), 0, Random.Range(-region.radius, region.radius));
 			position += transform.position;
 			
 			FoodObjects.Add((GameObject)Instantiate(foods[foodNum], position, Quaternion.identity));
